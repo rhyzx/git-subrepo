@@ -841,6 +841,7 @@ subrepo:branch() {
   [[ $first_gitrepo_commit ]] && filter=$first_gitrepo_commit..$branch
   FAIL=false RUN git filter-branch -f --prune-empty --tree-filter \
     "rm -f .gitrepo" "$filter"
+  FAIL=false RUN git filter-branch -f --commit-filter 'git commit-tree -S "$@";' "$filter"
 
   git:create-worktree "$branch"
 
