@@ -807,7 +807,7 @@ subrepo:branch() {
         local PREVIOUS_IFS=$IFS
         IFS=$'\n'
         local author_info
-        mapfile -t author_info < <(git log -1 --date=default --format=%ad%n%ae%n%an "$commit")
+        mapfile -t author_info < <(git log -1 --date=default --no-show-signature --format=%ad%n%ae%n%an "$commit")
         IFS=$PREVIOUS_IFS
 
         # When we create new commits we leave the author information unchanged
@@ -815,7 +815,7 @@ subrepo:branch() {
         # This should be analog how cherrypicking is handled allowing git
         # to store both the original author but also the responsible committer
         # that created the local version of the commit and pushed it.
-        prev_commit=$(git log -n 1 --date=default --format=%B "$commit" |
+        prev_commit=$(git log -n 1 --date=default --no-show-signature --format=%B "$commit" |
           GIT_AUTHOR_DATE=${author_info[0]} \
           GIT_AUTHOR_EMAIL=${author_info[1]} \
           GIT_AUTHOR_NAME=${author_info[2]} \
